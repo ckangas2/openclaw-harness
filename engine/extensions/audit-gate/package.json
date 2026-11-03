@@ -1,0 +1,13 @@
+{
+  "name": "openclaw-audit-gate",
+  "version": "0.7.0",
+  "type": "module",
+  "peerDependencies": {
+    "openclaw": ">=2026.9.2"
+  },
+  "openclaw": {
+    "extensions": [
+      "./index.js"
+    ]
+  }
+}

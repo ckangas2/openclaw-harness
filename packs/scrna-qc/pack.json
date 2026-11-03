@@ -1,0 +1,45 @@
+{
+  "name": "scrna-qc",
+  "version": "1.1.0",
+  "description": "Single-cell RNA-seq preprocessing and QC with the scverse stack (scanpy/anndata) and related tools.",
+  "domain": "single-cell and other omics work",
+  "libraries": [
+    "scanpy",
+    "anndata",
+    "scvi",
+    "scvi-tools",
+    "muon",
+    "mudata",
+    "squidpy",
+    "snapatac2",
+    "celltypist",
+    "decoupler",
+    "harmonypy",
+    "scrublet",
+    "scvelo",
+    "cellrank",
+    "pydeseq2",
+    "gseapy",
+    "rapids_singlecell",
+    "rapids-singlecell",
+    "seurat",
+    "bioconductor",
+    "deseq2",
+    "edger"
+  ],
+  "skills": [
+    "scanpy",
+    "bulk-rnaseq"
+  ],
+  "preferredSources": "PubMed, bioRxiv/medRxiv, official documentation, release notes",
+  "examples": {
+    "versionCheck": "python -c \"import scanpy; print(scanpy.__version__)\"",
+    "signatureCheck": "python -c \"import inspect, scanpy as sc; print(inspect.signature(sc.pp.filter_cells))\"",
+    "nativeCheck": "python -c \"import scanpy as sc; print(dir(sc.pp))\""
+  },
+  "retestHint": "including sparse input if relevant",
+  "premiseHint": "per sample",
+  "auditChecklist": [
+    "Form and units: for each key quantity, confirm its form and units (e.g. counts vs normalized, fraction vs percent) by running it, not by reading about it."
+  ]
+}

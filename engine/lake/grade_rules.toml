@@ -1,0 +1,33 @@
+# Truthinator grading rules (GRADE-style). Plain text on purpose: edit freely.
+# Every grade in a report lists the rules that fired, so a grade can always be traced back to this file.
+#
+# Ingredients per point (all computed from the lake, see truthinator.py):
+#   counted evidence  = first-hand evidence from primary papers (reviews and secondhand citations do not count)
+#   groups            = independent groups among those papers (same last author, or >= 2 shared authors)
+#   method / system   = per evidence item, from the evidence-profile step (words checked against the quote)
+
+levels = ["Very low", "Low", "Moderate", "High"]
+groups_needed = 3              # the 3-independent-groups standard
+high_requires_groups = true    # High only with >= groups_needed groups, whatever else applies
+unverified_max = ""            # e.g. "Low" to cap points the report's checker flagged. Off: a flag is about the
+                               # sentence's wording, not the evidence (checker false alarms on gold papers were seen)
+
+[start]   # starting level from the strongest method among the counted evidence
+intervention = "High"          # human genetic variant, knockout/knockdown, blocking antibody, drug/inhibitor, overexpression, trial
+observational = "Low"          # association / correlation / descriptive
+computational = "Very low"     # modelling or prediction only
+none = "Very low"              # nothing first-hand (relayed only)
+
+[down]    # levels removed when the rule fires
+one_group = 2                  # one group (or one paper)
+two_groups = 1                 # two independent groups
+indirect_only = 1              # no counted evidence in the question's own system
+disagreement = 1               # the point itself reports disagreeing evidence
+failed_check = 0               # the point is still UNVERIFIED after the lake's checks (0: shown as a separate flag)
+preprint_only = 1              # every counted paper is a preprint
+unstable = 1                   # present in at most half of the seed samples (only if a stability run is given)
+retracted = 3                  # any cited paper is retracted
+
+[up]      # levels added (never above High, and never to High without enough groups)
+two_methods = 1                # >= 2 different intervention methods agree (triangulation)
+human_genetics = 1             # human genetic evidence: an experiment of nature

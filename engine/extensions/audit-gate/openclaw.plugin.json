@@ -1,0 +1,76 @@
+{
+  "id": "audit-gate",
+  "name": "Audit Gate",
+  "description": "Keeps the auditor honest about evidence: no PASS without independent verification in that run, verdict-first replies, and only links actually retrieved. Shares per-run evidence with the grounded plugin.",
+  "activation": {
+    "onStartup": true
+  },
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "agents": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Auditor agent ids this plugin applies to. Default [\"auditor\"]."
+      },
+      "logFile": {
+        "type": "string",
+        "description": "Audit log path. Default: <stateDir>/logs/audit-gate.log"
+      },
+      "searchTools": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Tool names that count as searches. Default [\"web_search\"]."
+      },
+      "fetchTools": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Tool names that count as fetches. Default [\"web_fetch\"]."
+      },
+      "execTools": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Tool names that count as running checks. Default [\"exec\", \"bash\"]."
+      },
+      "wrapperTools": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Wrapper tools for deferred calls. Default [\"tool_call\"]."
+      },
+      "checkPython": {
+        "type": "string",
+        "description": "Python interpreter of the user's analysis environment, named in the audit checklist (e.g. ~/miniforge3/envs/scrna_workflow/bin/python)."
+      },
+      "stampUnverified": {
+        "type": "boolean",
+        "description": "Rewrite an unverified 'AUDIT: PASS' in the auditor's saved reply so readers see it does not count. Default true."
+      },
+      "auditSessionPattern": {
+        "type": "string",
+        "description": "Regex for audit-only sessions. In these, an inter-session message that is not an audit request is treated as an agent-to-agent follow-up and answered with REPLY_SKIP. Default ^agent:[^:]+:(audits|eval-)"
+      },
+      "packFiles": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Paths to pack.json files with domain knowledge (libraries, sources, examples, checklist items). Merged in order. Set by install.sh."
+      },
+      "userName": {
+        "type": "string",
+        "description": "How the agents refer to the person they work for (e.g. \"Alex\"). Default \"the user\"."
+      }
+    }
+  }
+}

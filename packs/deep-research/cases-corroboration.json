@@ -1,0 +1,76 @@
+{
+  "about": "Corroboration controls for the evidence lake. Built 2026-10-27 to calibrate one number: how many points reach two independent research groups. On ohsv-iv-delivery that was 0 of 30, which is uninterpretable alone - essentially one first-in-human IV oHSV trial exists, so a faithful report of that literature SHOULD find little corroboration. These two cases ask the same question shapes of densely corroborated literatures. pd1-melanoma-os pairs with tvec-os-randomised; ace2-sars2-receptor pairs with ohsv-iv-delivery. KEY PAPERS ARE GROUPED BY STUDY, NOT BY PAPER. Revised 2026-10-27 after the first run: the original version keyed on the 2015 primary trial reports, and the lake correctly cited the mature follow-up analyses instead (KEYNOTE-006 5-year, CheckMate 067 at 6.5 years) - which are the better sources for an overall-survival question. Scoring the report 0/3 for that would have measured the case file, not the pipeline. Each clinical trial and each structural approach is now a role=alternative group, satisfied by any of its reports. Note lakemap.py reads role/group; eval.py still flat-counts key_papers, so its key_cited/key_total is a weaker signal here - read lakemap's requirement score. Identifiers confirmed against Europe PMC 2026-10-27; a title-only search returns letters, commentaries, addenda and errata carrying the original's title, so every entry carries a DOI.",
+  "cases": [
+    {
+      "id": "pd1-melanoma-os",
+      "question": "What overall survival benefit have PD-1 inhibitors demonstrated in randomised trials in advanced melanoma?",
+      "key_papers": [
+        {
+          "label": "KEYNOTE-006 primary (Robert 2015 NEJM; pembrolizumab vs ipilimumab)",
+          "doi": "10.1056/NEJMoa1503093",
+          "pmid": "25891173",
+          "title": "pembrolizumab versus ipilimumab in advanced melanoma",
+          "role": "alternative",
+          "group": "keynote-006"
+        },
+        {
+          "label": "KEYNOTE-006 final OS (Schachter 2017 Lancet)",
+          "doi": "10.1016/S0140-6736(17)31601-X",
+          "pmid": "28822576",
+          "title": "pembrolizumab versus ipilimumab for advanced melanoma: final overall survival results",
+          "role": "alternative",
+          "group": "keynote-006"
+        },
+        {
+          "label": "KEYNOTE-006 5-year post-hoc (Robert 2019 Lancet Oncol)",
+          "doi": "10.1016/S1470-2045(19)30388-2",
+          "pmid": "31345627",
+          "title": "pembrolizumab versus ipilimumab in advanced melanoma (keynote-006): post-hoc 5-year results",
+          "role": "alternative",
+          "group": "keynote-006"
+        },
+        {
+          "label": "CheckMate 067 primary (Larkin 2015 NEJM; three-arm)",
+          "doi": "10.1056/NEJMoa1504030",
+          "pmid": "26027431",
+          "title": "combined nivolumab and ipilimumab or monotherapy in untreated melanoma",
+          "role": "alternative",
+          "group": "checkmate-067"
+        },
+        {
+          "label": "CheckMate 067 OS (Wolchok 2017 NEJM)",
+          "doi": "10.1056/NEJMoa1709684",
+          "title": "overall survival with combined nivolumab and ipilimumab in advanced melanoma",
+          "role": "alternative",
+          "group": "checkmate-067"
+        },
+        {
+          "label": "CheckMate 067 long-term (Wolchok 2022 JCO; 6.5-year)",
+          "doi": "10.1200/JCO.21.02229",
+          "title": "long-term outcomes with nivolumab plus ipilimumab or nivolumab alone versus ipilimumab",
+          "role": "alternative",
+          "group": "checkmate-067"
+        },
+        {
+          "label": "CheckMate 066 (Robert 2015 NEJM; nivolumab vs dacarbazine - the only PD-1 vs chemotherapy RCT here)",
+          "doi": "10.1056/NEJMoa1412082",
+          "pmid": "25399552",
+          "title": "nivolumab in previously untreated melanoma without braf mutation",
+          "role": "alternative",
+          "group": "checkmate-066"
+        }
+      ],
+      "notes": "The positive-control twin of tvec-os-randomised: same disease, same endpoint, same trial design, but several independent randomised phase III trials report a significant overall survival benefit rather than one trial reporting a descriptive secondary endpoint. A correct answer must state that PD-1 blockade improved OS against the active comparator in more than one randomised trial, and must keep the comparators straight - pembrolizumab was tested against ipilimumab, nivolumab against dacarbazine in BRAF-wild-type disease, and CheckMate 067 compared the combination and each monotherapy. None of the NEJM trial reports is open access, so all three will be read as abstracts; RCT abstracts carry the hazard ratios, which makes this case a test of the abstract-only path as well. Watch the group rule: the same investigators appear across these trials (Robert is an author on both KEYNOTE-006 and CheckMate 066), so author-overlap may collapse genuinely separate trials into one group. That is a property of melanoma trial authorship and a fair test of the same_group rule, not a defect in the case. Revised 2026-10-27: key papers are grouped per trial, since any report of a trial establishes that trial's OS result and the mature follow-ups are the better sources for this question. The first run cited three CheckMate 067 reports and two KEYNOTE-006 reports while naming neither trial for its most prominent reference, so a reader counts one trial as three - which is also why the corroboration number needs the study grouping before it means anything. CheckMate 066 was genuinely absent from the first run: no PD-1-versus-chemotherapy evidence appeared at all, and no gap line said so.",
+      "expect": {
+        "note": "eval.py does not read this block; it records the prediction so the result is a two-sided test rather than a number without a range. Corroboration counts come from truthinator run over the finished lake.",
+        "points_two_independent_groups_min": 4,
+        "primary_studies_min": 6,
+        "rationale": "At least three randomised phase III trials report OS for this drug class in this disease. A report finding no corroboration here indicates a pipeline limit, not a thin literature."
+      },
+      "scoring": {
+        "must_surface": "KEYNOTE-006 (pembrolizumab versus ipilimumab) and at least one of CheckMate 066 / CheckMate 067. The answer must name overall survival as a met endpoint in at least two independent randomised trials, and must name the comparator in each - ipilimumab for KEYNOTE-006, dacarbazine for CheckMate 066, ipilimumab and nivolumab monotherapy for CheckMate 067.",
+        "must_not_flatten": "Fail any answer that (a) reports response rate or progression-free survival in place of overall survival; (b) describes the comparator as placebo or best supportive care in any of these trials; (c) presents CheckMate 067 as having demonstrated superior overall survival for the combination over nivolumab alone, which it was not powered to test; (d) pools pembrolizumab and nivolumab results into a single trial result; (e) cites later follow-up analyses as if they were the primary randomised comparison."
+      }
+    }
+  ]
+}

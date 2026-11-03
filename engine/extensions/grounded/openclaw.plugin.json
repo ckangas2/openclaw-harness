@@ -1,0 +1,210 @@
+{
+  "id": "grounded",
+  "name": "Grounded",
+  "description": "Real-time grounding for a scoped agent. Before answering: search first for questions about things that change, and check installed versions + version-matched docs before writing code. After the draft: verify against the tool calls the agent actually made, revise once if needed, otherwise ship with a visible warning. Optional audit gate: code from listed agents must be reviewed by an independent auditor agent before it is final.",
+  "activation": {
+    "onStartup": true
+  },
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "agents": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Agent ids this plugin is active for (ctx.agentId guard)."
+      },
+      "logFile": {
+        "type": "string",
+        "description": "Optional audit log path. Default: <stateDir>/logs/grounded-audit.log"
+      },
+      "enableFacts": {
+        "type": "boolean",
+        "description": "Search-first grounding for questions about current information. Default true."
+      },
+      "enableCode": {
+        "type": "boolean",
+        "description": "Version-matched docs/introspection before writing code. Default true."
+      },
+      "defaultEnv": {
+        "type": "string",
+        "description": "Fallback conda environment name when a project has no environment.yml."
+      },
+      "extraLibraries": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Extra library names that should trigger code mode."
+      },
+      "searchTools": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Tool names that count as web searches. Default [\"web_search\"]."
+      },
+      "fetchTools": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Tool names that count as page fetches. Default [\"web_fetch\"]."
+      },
+      "execTools": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Tool names whose commands are scanned for version/doc checks. Default [\"exec\", \"bash\"]."
+      },
+      "wrapperTools": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Wrapper tools used to invoke deferred tools (unwrapped via params.id/args). Default [\"tool_call\"]."
+      },
+      "auditAgents": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Agent ids whose code must be audited by the auditor agent before finalizing."
+      },
+      "auditorId": {
+        "type": "string",
+        "description": "Agent id of the independent auditor (session_send target). Default \"auditor\"."
+      },
+      "auditorSessionKey": {
+        "type": "string",
+        "description": "Session key used to reach the auditor. Default \"agent:<auditorId>:main\"."
+      },
+      "requirePassVerdict": {
+        "type": "boolean",
+        "description": "Require the latest audit verdict to be PASS before code is final. Default true."
+      },
+      "auditTimeoutSeconds": {
+        "type": "number",
+        "minimum": 60,
+        "description": "Timeout for the auditor run and the wait. Default 1200."
+      },
+      "factsOnlyAgents": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Agents that get facts grounding only (no code-mode version-check requirement), e.g. the auditor."
+      },
+      "requireVerifiedPass": {
+        "type": "boolean",
+        "description": "Only count a PASS if the audit-gate plugin recorded real verification in that auditor run. Default true."
+      },
+      "maxAuditRounds": {
+        "type": "number",
+        "minimum": 1,
+        "description": "Maximum audit rounds before delivering with a warning. Default 3."
+      },
+      "checkPython": {
+        "type": "string",
+        "description": "The user's analysis Python; named in code-mode instructions for all checks and tests."
+      },
+      "editTools": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Tool names that edit files (edits to code files after an audit require a re-audit). Default [\"write\",\"edit\",\"apply_patch\"]."
+      },
+      "minAuditLines": {
+        "type": "number",
+        "minimum": 0,
+        "description": "Audit required when files were written or the answer has a code block at least this many lines long. Default 10."
+      },
+      "auditSessionKey": {
+        "type": "string",
+        "description": "Dedicated auditor session for non-eval audits (reset before every round). Default \"agent:<auditorId>:audits\"."
+      },
+      "requireFreshAudit": {
+        "type": "boolean",
+        "description": "Block audit sends until the audit session was reset this round. Default true."
+      },
+      "gateInstalls": {
+        "type": "boolean",
+        "description": "Require approval for package/environment changes. Default true."
+      },
+      "autoSkipEcho": {
+        "type": "boolean",
+        "description": "Answer agent-to-agent echo turns with REPLY_SKIP without calling the model. Default true."
+      },
+      "writeRoots": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Directories the agent may write code files in without asking (~ allowed). Writes elsewhere need approval. Empty = no write-scope gate."
+      },
+      "nudgePostPassEdits": {
+        "type": "boolean",
+        "description": "Bounce the first code edit after an audit PASS once, with a reminder that it makes the audit stale. Default true."
+      },
+      "packFiles": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Paths to pack.json files with domain knowledge (libraries, sources, examples, checklist items). Merged in order. Set by install.sh."
+      },
+      "userName": {
+        "type": "string",
+        "description": "How the agents refer to the person they work for (e.g. \"Alex\"). Default \"the user\"."
+      },
+      "gatesOnly": {
+        "type": "boolean",
+        "description": "Baseline mode for experiments: keep only the install and write-scope gates; no grounding reminders, audit loop, or answer checks. Default false."
+      },
+      "briefFirst": {
+        "type": "boolean",
+        "description": "Experiment: start every non-trivial task with a short research pass from primary sources, written to a brief file the agent works from. Default false."
+      },
+      "answerFiles": {
+        "type": "array",
+        "items": { "type": "string" },
+        "description": "File names that count as the task's answer (e.g. analysis_output.json). With claimCheck, the first tool call writing one is blocked once with the claim-check instruction. Default none."
+      },
+      "researchFirst": {
+        "type": "boolean",
+        "description": "Experiment (needs briefFirst): after inspectRuns interpreter runs (for the map), commands that run analysis code are blocked until the brief cites >=2 pages opened this run and a search happened. Cap 3 blocks, then allowed and warned. Default false."
+      },
+      "inspectRuns": {
+        "type": "integer",
+        "description": "Interpreter runs allowed before research under researchFirst. Default 3."
+      },
+      "mapFirst": {
+        "type": "boolean",
+        "description": "Experiment (needs briefFirst): the brief starts with a map of the task and data (what is unusual, the decisions the result depends on), then research on those decisions from up to 5-10 primary sources. Default false."
+      },
+      "claimCheck": {
+        "type": "boolean",
+        "description": "Experiment (needs briefFirst): on the first finished draft, the agent lists the claims its answer relies on, matches them to its brief, looks up and appends the ones the brief does not cover, and revises. Uses the single revise pass. Default false."
+      },
+      "researchGuide": {
+        "type": "string",
+        "description": "Experiment: path to a research-method guide (e.g. the research-101 skill) the agent is told to read before searching. Default none."
+      },
+      "briefDir": {
+        "type": "string",
+        "description": "Where research briefs are written. Default <first write root>/briefs."
+      },
+      "blockedPatterns": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "description": "Regexes (case-insensitive, ~ and $HOME expanded). A tool call whose arguments match any of them is blocked in every mode. For benchmarks: keeps answer keys and published solutions out of reach."
+      }
+    }
+  }
+}

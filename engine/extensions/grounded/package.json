@@ -1,0 +1,13 @@
+{
+  "name": "openclaw-grounded",
+  "version": "0.12.3",
+  "type": "module",
+  "peerDependencies": {
+    "openclaw": ">=2026.9.2"
+  },
+  "openclaw": {
+    "extensions": [
+      "./index.js"
+    ]
+  }
+}
